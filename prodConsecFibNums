@@ -35,16 +35,10 @@ function productFib(prod){
   let currentN = 1
   let finalArray = []
   
-  while (currentN*prevN<=prod){
-    if (currentN*prevN===prod){
-      finalArray.push(prevN, currentN, true)
-      return finalArray
-    }
-    else{
+  while (currentN*prevN < prod){
       currentN = prevN + currentN
       prevN = currentN - prevN
-    }
   }
-  finalArray.push(prevN, currentN, false)
+  finalArray.push(prevN, currentN, prevN*currentN===prod)
   return finalArray
 }
