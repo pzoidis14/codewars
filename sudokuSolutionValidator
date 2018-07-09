@@ -1,0 +1,95 @@
+// Sudoku Solution Validator, 4 kyu
+
+Sudoku is a game played on a 9x9 grid. The goal of the game is to fill all cells of the grid with digits from 1 to 9, so that each column, each row, and each of the nine 3x3 sub-grids (also known as blocks) contain all of the digits from 1 to 9. 
+(More info at: http://en.wikipedia.org/wiki/Sudoku)
+
+Sudoku Solution Validator
+Write a function validSolution/ValidateSolution/valid_solution() that accepts a 2D array representing a Sudoku board, and returns true if it is a valid solution, or false otherwise. The cells of the sudoku board may also contain 0's, which will represent empty cells. Boards containing one or more zeroes are considered to be invalid solutions.
+
+The board is always 9 cells by 9 cells, and every cell only contains integers from 0 to 9.
+
+
+
+// Solution:
+
+function validSolution(board){
+  let rowCount = 0;
+  let columns = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+  }
+  
+  let boxes = {
+    topL: 0,
+    topM: 0,
+    topR: 0,
+    midL: 0,
+    midM: 0,
+    midR: 0,
+    botL: 0,
+    botM: 0,
+    botR: 0,
+  }
+  
+  for (let i = 0; i < board.length; i++){
+    let row = board[i];
+    
+    if (row.includes(0)){
+      return false;
+    }
+    for (let j = 0; j < row.length; j++){
+      let val = row[j];
+      
+      rowCount += val;
+      columns[j] += val
+      
+      if (i === 0 || i === 1 || i === 2){
+        if (j === 0 || j === 1 || j === 2){
+          boxes['topL'] += val
+        } else if (j === 3 || j === 4 || j === 5){
+          boxes['topM'] += val
+        } else {
+          boxes['topR'] += val
+        }
+      } else if (i === 3 || i === 4 || i === 5){
+        if (j === 0 || j === 1 || j === 2){
+          boxes['midL'] += val
+        } else if (j === 3 || j === 4 || j === 5){
+          boxes['midM'] += val
+        } else {
+          boxes['midR'] += val
+        }
+      } else {
+        if (j === 0 || j === 1 || j === 2){
+          boxes['botL'] += val
+        } else if (j === 3 || j === 4 || j === 5){
+          boxes['botM'] += val
+        } else {
+          boxes['botR'] += val
+        }
+      }
+    }
+    if (rowCount !==45){
+      return false;
+    }
+    rowCount = 0;
+  }
+  for (let key in columns){
+    if (columns[key] !== 45){
+      return false
+    }
+  }
+  for (let key in boxes){
+    if (boxes[key] !== 45){
+      return false
+    }
+  }
+  return true
+}
